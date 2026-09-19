@@ -5,6 +5,13 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      simulate_failure:
+        description: 'Intentionally fail the test job to demonstrate the deployment gate'
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -13,6 +20,8 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    env:
+      SIMULATE_CI_FAILURE: ${{ inputs.simulate_failure || 'false' }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -35,7 +44,7 @@ jobs:
   deploy:
     name: Deploy client to GitHub Pages
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: needs.test.result == 'success' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -58,4 +67,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
           publish_dir: ./client/dist
