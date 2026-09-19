@@ -61,6 +61,8 @@ jobs:
 
       - name: Build static React client
         run: npm run build:client
+        env:
+          DEPLOY_TARGET: github-pages
 
       # GitHub Pages hosts only client/dist. The Express server is local/demo-only.
       - name: Publish client to GitHub Pages

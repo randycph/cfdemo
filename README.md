@@ -24,6 +24,19 @@ npm install
 
 Set the repository name in `client/vite.config.js` before publishing. For a GitHub Pages project site, the `base` value must be `/<repository-name>/`; this demo uses `/cfdemo/`.
 
+## Cloudflare Workers deployment
+
+This repository can also deploy its static Vite client to Cloudflare Workers. In the Cloudflare Worker build screen, use:
+
+```text
+Build command: npm ci && npm run build:client
+Deploy command: npx wrangler deploy
+```
+
+`wrangler.jsonc` tells Wrangler to publish `client/dist` as static Worker assets and enables SPA fallback routing. Cloudflare is served at the domain root, so the default Vite build uses `/` as its base path. The existing GitHub Pages workflow sets `DEPLOY_TARGET=github-pages` to retain its `/cfdemo/` project-site path.
+
+The Express server is not deployed to Cloudflare by this static-assets Worker configuration. Its API remains local/demo-only unless it is rewritten for the Workers runtime or hosted separately.
+
 Run the server locally in one terminal:
 
 ```bash
