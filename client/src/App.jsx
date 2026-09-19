@@ -42,7 +42,7 @@ export default function App() {
 
         <div className="hero">
           <p className="eyebrow">RELEASE CHECKLIST</p>
-          <h1 id="page-title">Ship with confidence. failed</h1>
+          <h1 id="page-title">Ship with confidence. faileds</h1>
           <p className="intro">
             A small CRUD example for a React client, backed by a separately tested Express API.
           </p>
